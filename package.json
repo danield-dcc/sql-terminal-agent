@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch ",
+    "start": "node --env-file=.env.local ./src/index.ts ",
+    "dev": "node --env-file=.env.local --watch ./src/index.ts ",
     "seed": "node src/seed.ts",
     "ingest": "node src/ingest.ts",
     "env:setup": "cp .env.example .env.local"

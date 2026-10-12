@@ -1,6 +1,13 @@
 import { generateText, Output } from 'ai'
 import { openai } from '@ai-sdk/openai'
 import z from 'zod'
+import type { SQLOutputValue } from 'node:sqlite'
+
+interface generateTextAnswerProps {
+  question: string
+  sql: string
+  rows: Record<string, SQLOutputValue>[]
+}
 
 const SCHEMA_DESCRIPTION = `
     Tabela: access_logs
@@ -82,3 +89,27 @@ export async function generateSqlObject(question: string) {
   };
 }
 
+
+export async function generateTextAnswer({ question, sql, rows }: generateTextAnswerProps) {
+  const { text } = await generateText({
+    model,
+    system: `
+      Responda em português, de forma objetiva, apenas com base nos dados retornados.
+      Se o resultado estiver vazio, diga isso claramente.
+    `,
+    prompt: `
+      Pergunta original:
+      ${question}
+
+      SQL executada:
+      ${sql}
+
+      Linhas retornadas em JSON:
+      ${JSON.stringify(rows, null, 2)}
+
+      Resposta:
+    `,
+  });
+
+  return text.trim();
+}
