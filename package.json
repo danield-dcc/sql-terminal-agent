@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch ",
-    "seed": "node src/seed.ts"
+    "seed": "node src/seed.ts",
+    "ingest": "node src/ingest.ts"
   },
   "keywords": [],
   "author": "",
