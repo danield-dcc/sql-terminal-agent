@@ -8,7 +8,9 @@
     "dev": "node --env-file=.env.local --watch ./src/index.ts ",
     "seed": "node src/seed.ts",
     "ingest": "node src/ingest.ts",
-    "env:setup": "cp .env.example .env.local"
+    "env:setup": "cp .env.example .env.local",
+    "test": "node --experimental-test-module-mocks --test ./src/*.spec.ts",
+    "test:watch": "node --experimental-test-module-mocks --watch --test ./src/*.spec.ts"
   },
   "keywords": [],
   "author": "",

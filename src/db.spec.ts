@@ -1,0 +1,35 @@
+import { describe, it} from 'node:test'
+import { equal} from "node:assert"
+import { createDb } from './db.ts'
+import { generateLogEntry, generateUser } from './mocks.ts'
+
+
+describe("Testes para a camada de banco de dados", () => {
+  const db = createDb()
+
+  it("Deve inserir um registro no banco de dados", () => {
+    const user = generateUser()
+    const record = generateLogEntry(user)
+
+
+    db.prepare(`INSERT INTO access_logs 
+    (ip, username, first_name, last_name, email, location, job_area, company, job_title, id, timestamp) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+      .run(
+        record.ip,
+        record.username,
+        record.first_name,
+        record.last_name,
+        record.email,
+        record.location,
+        record.job_area,
+        record.company,
+        record.job_title,
+        record.id,
+        record.timestamp
+        )
+
+      const all = db.prepare("SELECT COUNT(*) from access_logs").all()
+      equal(all[0]['COUNT(*)'], 1)
+  })
+})

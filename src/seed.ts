@@ -2,6 +2,7 @@
 import { createWriteStream, statSync } from 'node:fs'
 import { faker } from '@faker-js/faker'
 import { LOG_FILE, LOG_INTERVAL } from './constants.ts'
+import { generateLogEntry, generateUser } from './mocks.ts'
 
 
 const maxRecords = Number(process.argv[2] || Infinity)
@@ -16,28 +17,7 @@ if ((!Number.isInteger(maxRecords) && Number.isFinite(maxRecords))
 
 const stream = createWriteStream(LOG_FILE)
 
-function generateUser() {
-  return {
-    ip: faker.internet.ip(),
-    username: faker.internet.userName(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    location: faker.location.city(),
-    job_area: faker.person.jobArea(),
-    company: faker.company.name(),
-    job_title: faker.person.jobTitle(),
 
-  }
-}
-
-function generateLogEntry(user: any) {
-  return {
-    ...user,
-    id: faker.string.uuid(),
-    timestamp: faker.date.recent().toISOString()
-  }
-}
 //back pressure = não pode ficar escrevendo indefinidamente, o node pode dar erro
 function writeRecord(line: string) {
   return new Promise((resolve) => {

@@ -54,6 +54,7 @@ while(true){
     }
 
   } catch (error) {
-    console.log(styleText("red", "Erro ao processar a solicitação: "), error.message)
+    const message = error instanceof Error ? error.message : String(error)
+    console.log(styleText("red", "Erro ao processar a solicitação: "), message)
   }
 }
